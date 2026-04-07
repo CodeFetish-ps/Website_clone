@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Nike — Just Do It</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #111;
+    --white: #fff;
+    --gray: #f5f5f5;
+    --mid-gray: #e5e5e5;
+    --text-muted: #757575;
+    --accent: #f5222d;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--white);
+    color: var(--black);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px;
+    height: 60px;
+    background: var(--black);
+    transition: background 0.3s;
+  }
+  .nav-logo svg { width: 60px; fill: var(--white); }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a {
+    color: var(--white); text-decoration: none;
+    font-size: 14px; font-weight: 600; letter-spacing: 0.04em;
+    text-transform: uppercase; opacity: 0.85;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; }
+  .nav-actions { display: flex; gap: 18px; align-items: center; }
+  .nav-actions button {
+    background: none; border: none; cursor: pointer;
+    color: var(--white); font-size: 20px; opacity: 0.85;
+    transition: opacity 0.2s;
+  }
+  .nav-actions button:hover { opacity: 1; }
+  .nav-cart-badge {
+    position: relative;
+  }
+  .nav-cart-badge span {
+    position: absolute; top: -6px; right: -8px;
+    background: var(--accent); color: #fff;
+    font-size: 10px; font-weight: 700;
+    width: 16px; height: 16px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    margin-top: 60px;
+    height: calc(100vh - 60px);
+    background: var(--black);
+    display: flex; align-items: center;
+    position: relative; overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, #111 0%, #1a1a1a 40%, #222 100%);
+  }
+  /* Big diagonal accent */
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    right: -10%; top: -20%;
+    width: 70%; height: 140%;
+    background: #1c1c1c;
+    transform: skewX(-8deg);
+    border-left: 4px solid var(--accent);
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 0 80px;
+    max-width: 680px;
+  }
+  .hero-eyebrow {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block;
+    width: 32px; height: 2px; background: var(--accent);
+  }
+  .hero-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(60px, 9vw, 120px);
+    font-weight: 900; text-transform: uppercase;
+    line-height: 0.9; color: var(--white);
+    margin-bottom: 24px;
+  }
+  .hero-title span { color: var(--accent); }
+  .hero-sub {
+    font-size: 17px; color: rgba(255,255,255,0.6);
+    line-height: 1.6; margin-bottom: 40px; max-width: 420px;
+  }
+  .hero-cta {
+    display: flex; gap: 16px; flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-block; padding: 14px 36px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; text-decoration: none;
+    cursor: pointer; border: none; transition: all 0.2s;
+  }
+  .btn-primary {
+    background: var(--white); color: var(--black);
+  }
+  .btn-primary:hover { background: var(--accent); color: var(--white); }
+  .btn-outline {
+    background: transparent; color: var(--white);
+    border: 2px solid rgba(255,255,255,0.4);
+  }
+  .btn-outline:hover { border-color: var(--white); }
+
+  /* Big shoe silhouette placeholder */
+  .hero-shoe {
+    position: absolute; right: 5%; bottom: 0;
+    width: 52%; max-width: 700px;
+    z-index: 2;
+    display: flex; align-items: flex-end; justify-content: center;
+  }
+  .hero-shoe svg { width: 100%; opacity: 0.12; }
+  .hero-shoe-label {
+    position: absolute; bottom: 40px; right: 60px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+
+  /* ── SCROLLING MARQUEE ── */
+  .marquee-strip {
+    background: var(--accent);
+    padding: 12px 0; overflow: hidden; white-space: nowrap;
+  }
+  .marquee-inner {
+    display: inline-block; animation: marquee 18s linear infinite;
+  }
+  .marquee-inner span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--white);
+    padding: 0 40px;
+  }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── SECTION BASE ── */
+  section { padding: 80px 60px; }
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(32px, 5vw, 56px); font-weight: 900;
+    text-transform: uppercase; line-height: 1;
+    margin-bottom: 40px;
+  }
+
+  /* ── FEATURED CATEGORIES ── */
+  .categories { background: var(--white); }
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .cat-card {
+    position: relative; overflow: hidden;
+    aspect-ratio: 3/4; cursor: pointer;
+    background: var(--gray);
+  }
+  .cat-card:first-child { grid-row: span 2; aspect-ratio: auto; }
+  .cat-card-bg {
+    position: absolute; inset: 0;
+    transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+  .cat-card:hover .cat-card-bg { transform: scale(1.04); }
+  .cat-card-bg-run { background: linear-gradient(160deg, #1a1a2e, #16213e, #0f3460); }
+  .cat-card-bg-jordan { background: linear-gradient(160deg, #2d1b00, #4a2e00, #7a4f00); }
+  .cat-card-bg-life { background: linear-gradient(160deg, #1a0a2e, #2d1b50, #4a2d7a); }
+  .cat-card-bg-kids { background: linear-gradient(160deg, #003300, #005500, #007700); }
+  .cat-card-bg-collab { background: linear-gradient(160deg, #1a0000, #330000, #550000); }
+
+  /* Geometric pattern overlay */
+  .cat-card-bg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.03) 0px,
+      rgba(255,255,255,0.03) 1px,
+      transparent 1px,
+      transparent 20px
+    );
+  }
+  .cat-card-info {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 24px;
+    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%);
+  }
+  .cat-card-tag {
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: rgba(255,255,255,0.5); margin-bottom: 4px;
+  }
+  .cat-card-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 28px; font-weight: 900; text-transform: uppercase;
+    color: var(--white); margin-bottom: 12px;
+  }
+  .cat-card-link {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 600; color: var(--white);
+    text-decoration: none; letter-spacing: 0.04em;
+    border-bottom: 1px solid rgba(255,255,255,0.4);
+    padding-bottom: 2px;
+    transition: border-color 0.2s;
+  }
+  .cat-card-link:hover { border-color: var(--white); }
+
+  /* ── PRODUCT GRID ── */
+  .products { background: var(--gray); }
+  .products-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 40px;
+  }
+  .products-header .section-title { margin-bottom: 0; }
+  .view-all {
+    font-size: 14px; font-weight: 600; color: var(--black);
+    text-decoration: underline; cursor: pointer;
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .product-card {
+    background: var(--white);
+    cursor: pointer; overflow: hidden;
+    transition: transform 0.25s;
+  }
+  .product-card:hover { transform: translateY(-4px); }
+  .product-img {
+    aspect-ratio: 1;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 72px; position: relative; overflow: hidden;
+  }
+  .product-img-inner {
+    width: 80%; height: 80%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 64px;
+    transition: transform 0.4s;
+  }
+  .product-card:hover .product-img-inner { transform: scale(1.1) rotate(-3deg); }
+  .product-badge {
+    position: absolute; top: 12px; left: 12px;
+    background: var(--accent); color: var(--white);
+    font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 4px 8px;
+  }
+  .product-info { padding: 16px; }
+  .product-cat {
+    font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px;
+  }
+  .product-name {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px; font-weight: 700; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .product-colors { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+  .product-price {
+    font-size: 16px; font-weight: 600; letter-spacing: 0.02em;
+  }
+  .product-price s { color: var(--text-muted); margin-right: 8px; }
+  .product-price .sale { color: var(--accent); }
+
+  /* Color swatches */
+  .color-swatches { display: flex; gap: 6px; margin-bottom: 10px; }
+  .swatch {
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 2px solid transparent; cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .swatch.active, .swatch:hover { border-color: var(--black); }
+
+  /* ── JUST DO IT BANNER ── */
+  .jdi-banner {
+    background: var(--black); color: var(--white);
+    padding: 120px 80px;
+    display: flex; flex-direction: column; align-items: center;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .jdi-banner::before {
+    content: 'JUST DO IT';
+    position: absolute;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20vw; font-weight: 900;
+    color: rgba(255,255,255,0.03);
+    white-space: nowrap; top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    pointer-events: none;
+  }
+  .jdi-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(48px, 8vw, 100px);
+    font-weight: 900; text-transform: uppercase;
+    line-height: 0.9; margin-bottom: 24px;
+    position: relative; z-index: 1;
+  }
+  .jdi-sub {
+    font-size: 17px; color: rgba(255,255,255,0.55);
+    max-width: 520px; line-height: 1.65; margin-bottom: 40px;
+    position: relative; z-index: 1;
+  }
+
+  /* ── MEMBERSHIP ── */
+  .membership {
+    background: var(--white);
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0; align-items: stretch;
+    padding: 0;
+  }
+  .membership-text {
+    padding: 80px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .membership-visual {
+    background: var(--black);
+    display: flex; align-items: center; justify-content: center;
+    min-height: 400px; position: relative; overflow: hidden;
+  }
+  .membership-visual-inner {
+    font-size: 120px; opacity: 0.15;
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+  .membership-perks { list-style: none; margin: 28px 0; }
+  .membership-perks li {
+    display: flex; align-items: center; gap: 12px;
+    font-size: 15px; padding: 10px 0;
+    border-bottom: 1px solid var(--mid-gray);
+  }
+  .membership-perks li:first-child { border-top: 1px solid var(--mid-gray); }
+  .perk-icon {
+    width: 28px; height: 28px; background: var(--black);
+    border-radius: 50%; display: flex; align-items: center;
+    justify-content: center; font-size: 13px; flex-shrink: 0;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--black); color: rgba(255,255,255,0.6);
+    padding: 60px;
+  }
+  .footer-top {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px;
+    margin-bottom: 48px;
+  }
+  .footer-col h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px; font-weight: 700; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--white); margin-bottom: 18px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 10px; }
+  .footer-col ul li a {
+    color: rgba(255,255,255,0.55); text-decoration: none;
+    font-size: 13px; transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: var(--white); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .footer-bottom p { font-size: 12px; }
+  .social-links { display: flex; gap: 16px; }
+  .social-links a {
+    color: rgba(255,255,255,0.5); font-size: 20px;
+    text-decoration: none; transition: color 0.2s;
+  }
+  .social-links a:hover { color: var(--white); }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0; transform: translateY(32px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 900px) {
+    nav { padding: 0 20px; }
+    .nav-links { display: none; }
+    .hero-content { padding: 0 30px; }
+    section { padding: 60px 20px; }
+    .cat-grid { grid-template-columns: 1fr 1fr; }
+    .cat-card:first-child { grid-row: span 1; }
+    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .membership { grid-template-columns: 1fr; }
+    .membership-visual { min-height: 200px; }
+    .footer-top { grid-template-columns: repeat(2, 1fr); }
+    .jdi-banner { padding: 80px 30px; }
+  }
+  @media (max-width: 500px) {
+    .cat-grid { grid-template-columns: 1fr; }
+    .product-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <svg viewBox="0 0 60 24" xmlns="http://www.w3.org/2000/svg">
+      <!-- Nike Swoosh simplified -->
+      <path d="M5 18 C10 6, 38 0, 55 8 C42 10, 22 12, 5 18Z"/>
+    </svg>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#">New & Featured</a></li>
+    <li><a href="#">Men</a></li>
+    <li><a href="#">Women</a></li>
+    <li><a href="#">Kids</a></li>
+    <li><a href="#">Sale</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button title="Search">&#128269;</button>
+    <button title="Favorites">&#9825;</button>
+    <div class="nav-cart-badge">
+      <button title="Cart">&#128717;</button>
+      <span>3</span>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">New Collection 2025</div>
+    <h1 class="hero-title">Move<br>Beyond<br><span>Limits</span></h1>
+    <p class="hero-sub">Engineered for the relentless. Built for the bold. The new Air Max 2025 redefines what it means to move.</p>
+    <div class="hero-cta">
+      <a href="#products" class="btn btn-primary">Shop Now</a>
+      <a href="#" class="btn btn-outline">Explore Collection</a>
+    </div>
+  </div>
+  <div class="hero-shoe">
+    <!-- Abstract geometric shoe shape -->
+    <svg viewBox="0 0 600 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="300" cy="260" rx="260" ry="20" fill="white" opacity="0.05"/>
+      <path d="M80 220 C80 220, 120 100, 200 80 C280 60, 340 80, 400 70 C460 60, 520 90, 530 140 C540 190, 480 230, 380 240 C280 250, 160 250, 80 220Z" fill="white"/>
+      <path d="M200 80 C200 80, 240 60, 300 55 C360 50, 420 65, 440 80" stroke="white" stroke-width="3" fill="none"/>
+      <circle cx="150" cy="195" r="30" fill="rgba(0,0,0,0.2)"/>
+      <circle cx="320" cy="210" r="35" fill="rgba(0,0,0,0.2)"/>
+      <circle cx="450" cy="200" r="28" fill="rgba(0,0,0,0.2)"/>
+    </svg>
+    <div class="hero-shoe-label">Air Max 2025</div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span>Just Do It</span><span>•</span>
+    <span>New Arrivals</span><span>•</span>
+    <span>Air Max</span><span>•</span>
+    <span>Jordan</span><span>•</span>
+    <span>Free Shipping</span><span>•</span>
+    <span>Nike Members</span><span>•</span>
+    <span>Just Do It</span><span>•</span>
+    <span>New Arrivals</span><span>•</span>
+    <span>Air Max</span><span>•</span>
+    <span>Jordan</span><span>•</span>
+    <span>Free Shipping</span><span>•</span>
+    <span>Nike Members</span><span>•</span>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<section class="categories reveal">
+  <div class="section-label">Shop By Category</div>
+  <div class="section-title">Find Your Game</div>
+  <div class="cat-grid">
+    <div class="cat-card">
+      <div class="cat-card-bg cat-card-bg-run"></div>
+      <div class="cat-card-info">
+        <div class="cat-card-tag">Performance</div>
+        <div class="cat-card-title">Running</div>
+        <a href="#" class="cat-card-link">Shop Running →</a>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-card-bg cat-card-bg-jordan"></div>
+      <div class="cat-card-info">
+        <div class="cat-card-tag">Icon</div>
+        <div class="cat-card-title">Jordan</div>
+        <a href="#" class="cat-card-link">Shop Jordan →</a>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-card-bg cat-card-bg-life"></div>
+      <div class="cat-card-info">
+        <div class="cat-card-tag">Lifestyle</div>
+        <div class="cat-card-title">Sportswear</div>
+        <a href="#" class="cat-card-link">Shop Sportswear →</a>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-card-bg cat-card-bg-kids"></div>
+      <div class="cat-card-info">
+        <div class="cat-card-tag">Kids</div>
+        <div class="cat-card-title">Little Athletes</div>
+        <a href="#" class="cat-card-link">Shop Kids →</a>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-card-bg cat-card-bg-collab"></div>
+      <div class="cat-card-info">
+        <div class="cat-card-tag">Limited</div>
+        <div class="cat-card-title">Collabs</div>
+        <a href="#" class="cat-card-link">Shop Collabs →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products reveal" id="products">
+  <div class="products-header">
+    <div>
+      <div class="section-label">Best Sellers</div>
+      <div class="section-title">Featured Drops</div>
+    </div>
+    <span class="view-all">View All</span>
+  </div>
+  <div class="product-grid">
+
+    <!-- Product 1 -->
+    <div class="product-card">
+      <div class="product-img" style="background:#f0f0f0;">
+        <div class="product-badge">New</div>
+        <div class="product-img-inner">👟</div>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Running</div>
+        <div class="product-name">Air Max 2025</div>
+        <div class="color-swatches">
+          <div class="swatch active" style="background:#222;"></div>
+          <div class="swatch" style="background:#e74c3c;"></div>
+          <div class="swatch" style="background:#3498db;"></div>
+        </div>
+        <div class="product-colors">3 Colours</div>
+        <div class="product-price">₹ 12,995</div>
+      </div>
+    </div>
+
+    <!-- Product 2 -->
+    <div class="product-card">
+      <div class="product-img" style="background:#fef9ec;">
+        <div class="product-badge">Sale</div>
+        <div class="product-img-inner">🥿</div>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Jordan</div>
+        <div class="product-name">Jordan 1 Retro High</div>
+        <div class="color-swatches">
+          <div class="swatch active" style="background:#8B0000;"></div>
+          <div class="swatch" style="background:#222;"></div>
+        </div>
+        <div class="product-colors">2 Colours</div>
+        <div class="product-price">
+          <s>₹ 14,995</s>
+          <span class="sale">₹ 10,995</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product 3 -->
+    <div class="product-card">
+      <div class="product-img" style="background:#f0f4ff;">
+        <div class="product-img-inner">👟</div>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Training</div>
+        <div class="product-name">Metcon 9</div>
+        <div class="color-swatches">
+          <div class="swatch active" style="background:#1a1a2e;"></div>
+          <div class="swatch" style="background:#f5222d;"></div>
+          <div class="swatch" style="background:#888;"></div>
+          <div class="swatch" style="background:#2ecc71;"></div>
+        </div>
+        <div class="product-colors">4 Colours</div>
+        <div class="product-price">₹ 9,995</div>
+      </div>
+    </div>
+
+    <!-- Product 4 -->
+    <div class="product-card">
+      <div class="product-img" style="background:#fff0f0;">
+        <div class="product-badge">Best Seller</div>
+        <div class="product-img-inner">🩴</div>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Lifestyle</div>
+        <div class="product-name">Air Force 1 '07</div>
+        <div class="color-swatches">
+          <div class="swatch active" style="background:#fff; border: 1px solid #ccc;"></div>
+          <div class="swatch" style="background:#222;"></div>
+        </div>
+        <div class="product-colors">2 Colours</div>
+        <div class="product-price">₹ 7,495</div>
+      </div>
+    </div>
+
+    <!-- Product 5 -->
+    <div class="product-card">
+      <div class="product-img" style="background:#f5f0ff;">
+        <div class="product-img-inner">🥾</div>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Basketball</div>
+        <div class="product-name">LeBron 21</div>
+        <div class="color-swatches">
+          <div class="swatch active" style="background:#4a0080;"></div>
+          <div class="swatch" style="background:#e7a100;"></div>
+        </div>
+        <div class="product-colors">2 Colours</div>
+        <div class="product-price">₹ 16,995</div>
+      </div>
+    </div>
+
+    <!-- Product 6 -->
+    <div class="product-card">
+      <div class="product-img" style="background:#f0fff4;">
+        <div class="product-badge">New</div>
+        <div class="product-img-inner">👟</div>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Running</div>
+        <div class="product-name">Pegasus 41</div>
+        <div class="color-swatches">
+          <div class="swatch active" style="background:#006400;"></div>
+          <div class="swatch" style="background:#ff8c00;"></div>
+          <div class="swatch" style="background:#191970;"></div>
+        </div>
+        <div class="product-colors">3 Colours</div>
+        <div class="product-price">₹ 11,495</div>
+      </div>
+    </div>
+
+    <!-- Product 7 -->
+    <div class="product-card">
+      <div class="product-img" style="background:#fff5e6;">
+        <div class="product-img-inner">👟</div>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Lifestyle</div>
+        <div class="product-name">Cortez</div>
+        <div class="color-swatches">
+          <div class="swatch active" style="background:#8B4513;"></div>
+          <div class="swatch" style="background:#fff; border:1px solid #ccc;"></div>
+        </div>
+        <div class="product-colors">2 Colours</div>
+        <div class="product-price">₹ 6,995</div>
+      </div>
+    </div>
+
+    <!-- Product 8 -->
+    <div class="product-card">
+      <div class="product-img" style="background:#ffeef0;">
+        <div class="product-badge">Sale</div>
+        <div class="product-img-inner">🩴</div>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Sandals</div>
+        <div class="product-name">Benassi JDI</div>
+        <div class="color-swatches">
+          <div class="swatch active" style="background:#222;"></div>
+          <div class="swatch" style="background:#f5222d;"></div>
+          <div class="swatch" style="background:#2980b9;"></div>
+        </div>
+        <div class="product-colors">3 Colours</div>
+        <div class="product-price">
+          <s>₹ 2,995</s>
+          <span class="sale">₹ 1,995</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- JDI BANNER -->
+<section class="jdi-banner reveal">
+  <div class="jdi-title">Just.<br>Do.<br>It.</div>
+  <p class="jdi-sub">Don't think twice. Lace up, step out, and let your body do the talking. Greatness isn't given — it's taken.</p>
+  <a href="#" class="btn btn-primary">Shop the Latest</a>
+</section>
+
+<!-- MEMBERSHIP -->
+<div class="membership reveal">
+  <div class="membership-text">
+    <div class="section-label">Nike Membership</div>
+    <h2 class="section-title">The Best<br>of Nike,<br>For You.</h2>
+    <p style="font-size:15px; color:#555; line-height:1.7; margin-bottom:8px;">
+      Sign up for free and unlock exclusive access to the latest drops, member-only discounts, and early release access.
+    </p>
+    <ul class="membership-perks">
+      <li>
+        <div class="perk-icon" style="color:#fff;">🚚</div>
+        Free shipping on every order
+      </li>
+      <li>
+        <div class="perk-icon" style="color:#fff;">🎁</div>
+        Exclusive member discounts
+      </li>
+      <li>
+        <div class="perk-icon" style="color:#fff;">⚡</div>
+        Early access to new releases
+      </li>
+      <li>
+        <div class="perk-icon" style="color:#fff;">🏃</div>
+        Free Nike app workouts
+      </li>
+    </ul>
+    <a href="#" class="btn btn-primary" style="align-self:flex-start;">Join Free</a>
+  </div>
+  <div class="membership-visual">
+    <div class="membership-visual-inner" style="color:#fff;">✓</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-col">
+      <h4>Find a Store</h4>
+      <ul>
+        <li><a href="#">Store Locator</a></li>
+        <li><a href="#">Nike By You</a></li>
+        <li><a href="#">Student Discount</a></li>
+        <li><a href="#">Gift Cards</a></li>
+        <li><a href="#">Nike Membership</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Help</h4>
+      <ul>
+        <li><a href="#">Order Status</a></li>
+        <li><a href="#">Delivery</a></li>
+        <li><a href="#">Returns</a></li>
+        <li><a href="#">Contact Us</a></li>
+        <li><a href="#">Size Guide</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>About Nike</h4>
+      <ul>
+        <li><a href="#">News</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#">Investors</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Purpose</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Promotions</h4>
+      <ul>
+        <li><a href="#">Current Offers</a></li>
+        <li><a href="#">Student Discount</a></li>
+        <li><a href="#">NHS Discount</a></li>
+        <li><a href="#">Military Discount</a></li>
+        <li><a href="#">Birthday Reward</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Nike, Inc. All Rights Reserved — Clone project for learning purposes.</p>
+    <div class="social-links">
+      <a href="#" title="Instagram">📷</a>
+      <a href="#" title="Twitter">🐦</a>
+      <a href="#" title="Facebook">📘</a>
+      <a href="#" title="YouTube">▶️</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => io.observe(r));
+
+  // Color swatches interactive
+  document.querySelectorAll('.color-swatches').forEach(group => {
+    group.querySelectorAll('.swatch').forEach(swatch => {
+      swatch.addEventListener('click', () => {
+        group.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+        swatch.classList.add('active');
+      });
+    });
+  });
+
+  // Smooth nav background on scroll
+  const nav = document.querySelector('nav');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 80) nav.style.background = 'rgba(0,0,0,0.95)';
+    else nav.style.background = '#111';
+  });
+</script>
+</body>
+</html>
